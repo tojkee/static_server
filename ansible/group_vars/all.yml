@@ -1,0 +1,12 @@
+---
+users_groups:
+  - admin
+  - developers
+
+users:
+  - name: devuser
+    shell: /bin/zsh
+    state: present
+    password: "changeme"  
+    ssh_key: "ssh-rsa AAAA..."
+    groups: "admin,developers"

@@ -1,0 +1,16 @@
+---
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: Ensure Nginx config for static server is present
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/default
+    mode: '0644'
+
+- name: Enable gzip, caching, logging
+  service:
+    name: nginx
+    state: reloaded

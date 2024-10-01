@@ -1,0 +1,12 @@
+---
+- name: Ensure /static exists
+  file:
+    path: /static
+    state: directory
+
+- name: Copy static images
+  copy:
+    src: "{{ item }}"
+    dest: /static/images/
+  with_fileglob:
+    - "{{ playbook_dir }}/../static/*"

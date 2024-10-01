@@ -1,0 +1,24 @@
+---
+- name: Ensure groups are present
+  group:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ users_groups }}"
+
+- name: Manage system users
+  user:
+    name: "{{ item.name }}"
+    shell: "{{ item.shell }}"
+    state: "{{ item.state }}"
+    password: "{{ item.password | password_hash('sha512') }}"
+    groups: "{{ item.groups }}"
+    append: yes
+  with_items: "{{ users }}"
+  
+- name: Set authorized key for users
+  authorized_key:
+    user: "{{ item.name }}"
+    key: "{{ item.ssh_key }}"
+    manage_dir: yes
+    state: present
+  with_items: "{{ users }}"

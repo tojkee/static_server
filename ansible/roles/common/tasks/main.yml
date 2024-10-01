@@ -1,0 +1,15 @@
+---
+- name: Update and upgrade apt packages
+  apt:
+    update_cache: yes
+    upgrade: dist
+  
+- name: Install required packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - htop
+    - ncdu
+    - git
+    - nano
