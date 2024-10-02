@@ -2,12 +2,13 @@ server {
     listen 80;
     server_name localhost;
 
+    # Раздача статики по пути /images
     location /images/ {
         root /static;
         autoindex on;
         gzip on;
-        gzip_types image/png image/jpeg;
-        expires 1h;
+        gzip_types image/png image/jpeg image/svg+xml;
+        expires 1h; 
     }
     
     access_log /var/log/nginx/access.log;

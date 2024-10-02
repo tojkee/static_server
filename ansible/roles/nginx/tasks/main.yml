@@ -1,16 +1,36 @@
 ---
-- name: Install Nginx
+- name: Install nginx
   apt:
     name: nginx
     state: present
+    update_cache: yes
 
-- name: Ensure Nginx config for static server is present
+- name: Ensure nginx sites-available and sites-enabled directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+  with_items:
+    - /etc/nginx/sites-available
+    - /etc/nginx/sites-enabled
+
+- name: Deploy Nginx configuration for static server
   template:
     src: nginx.conf.j2
     dest: /etc/nginx/sites-available/default
     mode: '0644'
+  notify: Reload nginx
 
-- name: Enable gzip, caching, logging
+- name: Enable site by creating symbolic link
+  file:
+    src: /etc/nginx/sites-available/default
+    dest: /etc/nginx/sites-enabled/default
+    state: link
+  notify: Reload nginx
+
+- name: Ensure nginx is running
   service:
     name: nginx
-    state: reloaded
+    state: started
+    enabled: yes

@@ -9,7 +9,6 @@ services:
       - "8022:22"
       - "8080:80"
     volumes:
-      - ./static:/static
-      - ./ansible:/ansible
+      # - ./../static/images:/static/images
       - ./nginx/logs:/var/log/nginx
     tty: true
